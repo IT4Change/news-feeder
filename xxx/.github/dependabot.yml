@@ -1,0 +1,49 @@
+version: 2
+updates:
+- package-ecosystem: "github-actions"
+  open-pull-requests-limit: 99
+  directory: "/"
+  rebase-strategy: "disabled"
+  schedule:
+    interval: weekly
+    day: "saturday"
+    timezone: "Europe/Berlin"
+    time: "03:00"
+- package-ecosystem: npm
+  open-pull-requests-limit: 99
+  directory: "/"
+  rebase-strategy: "disabled"
+  schedule:
+    interval: weekly
+    day: "saturday"
+    timezone: "Europe/Berlin"
+    time: "03:00"
+  groups:
+    eslint:
+      applies-to: version-updates
+      patterns:
+        - "*eslint*"
+      exclude-patterns:
+        - "eslint-plugin-n"
+        - "eslint"
+    prisma:
+      applies-to: version-updates
+      patterns:
+        - "*prisma*"
+    remark:
+      applies-to: version-updates
+      patterns:
+        - "remark*"
+    vuepress:
+      applies-to: version-updates
+      patterns:
+        - "*vuepress*"
+- package-ecosystem: docker
+  open-pull-requests-limit: 99
+  directory: "/"
+  rebase-strategy: "disabled"
+  schedule:
+    interval: weekly
+    day: "saturday"
+    timezone: "Europe/Berlin"
+    time: "03:00"

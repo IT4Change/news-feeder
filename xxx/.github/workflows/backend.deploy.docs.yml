@@ -1,0 +1,37 @@
+name: "backend:deploy:docs to github"
+on:
+  push:
+    branches:
+      - master
+jobs:
+  files-changed:
+      name: Detect File Changes
+      runs-on: ubuntu-latest
+      outputs:
+        changes: ${{ steps.changes.outputs.backend-test-build-docs }}
+      steps:
+        - uses: actions/checkout@master
+
+        - name: Check for backend docs file changes
+          uses: dorny/paths-filter@v3.0.2
+          id: changes
+          with:
+            token: ${{ github.token }}
+            filters: .github/file-filters.yml
+            list-files: shell
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: vuepress-deploy
+      uses: IT4Change/vuepress-build-and-deploy@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #TARGET_REPO: username/repo
+        #TARGET_BRANCH: master
+        BUILD_SCRIPT: npm install && npm run docs:build
+        BUILD_DIR: build/docs/
+        VUEPRESS_BASE: "boilerplate-backend"
